@@ -29,7 +29,7 @@ class Utilisateur
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $dateOfBirth;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', options: ['default'=>false])]
     private $isAdmin;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Panier::class, cascade: ['persist', 'remove'])]
