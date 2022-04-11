@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name : 'im22_users')]
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 class Utilisateur
 {
@@ -30,6 +31,9 @@ class Utilisateur
 
     #[ORM\Column(type: 'boolean')]
     private $isAdmin;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Panier::class, cascade: ['persist', 'remove'])]
+    private $shoppingBasket;
 
     public function getId(): ?int
     {
@@ -107,4 +111,22 @@ class Utilisateur
 
         return $this;
     }
+
+    public function getShoppingBasket(): ?Panier
+    {
+        return $this->shoppingBasket;
+    }
+
+    public function setShoppingBasket(Panier $shoppingBasket): self
+    {
+        // set the owning side of the relation if necessary
+        if ($shoppingBasket->getUser() !== $this) {
+            $shoppingBasket->setUser($this);
+        }
+
+        $this->shoppingBasket = $shoppingBasket;
+
+        return $this;
+    }
+
 }
