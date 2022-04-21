@@ -9,7 +9,7 @@
     </style>
 
     <div class="accueil-wrapper">
-        <h1>Bonjour {{ user }}! ✅</h1>
+        <h1>Bonjour {{ user.login }}! ✅</h1>
 
         <p>
             {{ welcome }} {{ nameSite }}
@@ -20,6 +20,8 @@
                 qu'invité
             {% elseif not user.getIsAdmin() %}
                 que membre
+            {% elseif user.getIsSuperAdmin() %}
+                que super-administrateur
             {% else %}
                 qu'administrateur
             {% endif %}
