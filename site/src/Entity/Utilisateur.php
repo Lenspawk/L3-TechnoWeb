@@ -35,6 +35,9 @@ class Utilisateur
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Panier::class, cascade: ['persist', 'remove'])]
     private $shoppingBasket;
 
+    #[ORM\Column(type: 'boolean', options: ['default'=>false])]
+    private $isSuperAdmin;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -125,6 +128,18 @@ class Utilisateur
         }
 
         $this->shoppingBasket = $shoppingBasket;
+
+        return $this;
+    }
+
+    public function getIsSuperAdmin(): ?bool
+    {
+        return $this->isSuperAdmin;
+    }
+
+    public function setIsSuperAdmin(bool $isSuperAdmin): self
+    {
+        $this->isSuperAdmin = $isSuperAdmin;
 
         return $this;
     }

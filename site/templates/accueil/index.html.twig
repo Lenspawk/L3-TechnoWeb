@@ -14,5 +14,15 @@
         <p>
             {{ welcome }} {{ nameSite }}
         </p>
+        <p>
+            Vous êtes connecté en tant
+            {%  if user is null %}
+                qu'invité
+            {% elseif not user.getIsAdmin() %}
+                que membre
+            {% else %}
+                qu'administrateur
+            {% endif %}
+        </p>
     </div>
 {% endblock %}

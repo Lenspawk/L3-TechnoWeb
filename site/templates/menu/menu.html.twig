@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<title>MenuController</title>
+
+{% block body %}
+    <ul>
+        {#<li>{{ nbProducts }} produits enregistrés</li>#}
+        <li><a href="{{ path('accueil_index') }}">Acceuil</a></li>
+        <li> <a href="{{ path("menu_main") }}" >Connexion</a> </li>
+        <li> <a href="{{ path("menu_main") }}">Inscription</a> </li>
+    </ul>
+    {#{% if user.getIsAdmin() %}#}
+        <p> Vous êtes l'administrateur {#{{ user.login }}#}</p>
+        <ul>
+            {#<li>{{ nbProducts }} produits enregistrés</li>#}
+            <li> <a href="{{ path("menu_main") }}"> Gérer les utilisateurs </a> </li>
+            <li> <a href="{{ path("menu_main") }}">Ajouter un produit</a> </li>
+            <li> <a href="https://fr.wikipedia.org/wiki/The_Truman_Show">The Truman Show</a> </li>
+        </ul>
+    {#{% elseif user.getIsSuperAdmin() %}#}
+        <p> Vous êtes le super-administrateur {#{{ user.login }}#}</p>
+        <ul>
+            {#<li>{{ nbProducts }} produits enregistrés</li>#}
+            <li> <a href="{{ path("menu_main") }}"> Gestion des administrateurs </a> </li>
+            <li> <a href="{{ path("menu_main") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+        </ul>
+    {#{% else %}#}
+        <p> vous êtes l'utilisateur {#{{ user.login }}#}</p>
+        <ul>
+            {#<li>{{ nbProducts }} produits enregistrés</li>#}
+            <li> <a href="{{ path("menu_main") }}">Modifier & Editer son profil</a> </li>
+            <li> <a href="{{ path("menu_main") }}">Magasin</a> </li>
+            <li> <a href="{{ path("menu_main") }}">Mon panier</a> </li>
+            <li> <a href="{{ path("accueil_index") }}">Accueil</a> </li>
+            <li> <a href="{{ path("menu_main") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+        </ul>
+    {#{% endif %}#}
+{% endblock %}
