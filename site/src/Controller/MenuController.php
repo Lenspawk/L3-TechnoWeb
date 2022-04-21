@@ -26,13 +26,13 @@ class MenuController extends AbstractController
         //$panierRepository = $em->getRepository('App:Panier');
         //$panier = count($panierRepository)->findAll();
 
-        //$args = array(
+        $args = array(
             //'user'=> $utilisateur,
-            //'user'=> $this->getUser(),
+            'user'=> $this->getUser(),
             //'nbProducts' => $panier
-        //);
+        );
 
-        return $this->render('menu/menu.html.twig'/*, $args*/);
+        return $this->render('menu/menu.html.twig', $args);
     }
 
     #[Route('/ajoutendur', name: 'ajoutendur')]

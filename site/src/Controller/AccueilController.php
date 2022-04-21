@@ -16,7 +16,7 @@ class AccueilController extends AbstractController
         return $this->render('accueil/index.html.twig', [
             'user' => $this->getUser(),
             'welcome' => 'Nous te souhaitons la bienvenue sur le site',
-            'nameSite' => '[NOM_DU_SITE]',
+            'nameSite' => 'Simon&Guillaume',
         ]);
     }
 }

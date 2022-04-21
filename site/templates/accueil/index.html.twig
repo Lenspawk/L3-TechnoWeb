@@ -1,29 +1,48 @@
 <!DOCTYPE html>
 
-<title>Bienvenue !</title>
+<title>Accueil</title>
 
 {% block body %}
-    <style>
-        .accueil-wrapper { background: #f3dac5; margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .accueil-wrapper code { background: #efd2b7; padding: 2px 6px; }
-    </style>
-
     <div class="accueil-wrapper">
-        <h1>Bonjour {{ user.login }}! ✅</h1>
+        {%  if user is null %}
+        <h1>Bonjour visiteur!</h1>
+        {% else %}
+        <h1>Bonjour {{ user.login }}!</h1>
+        {% endif %}
 
         <p>
             {{ welcome }} {{ nameSite }}
         </p>
         <p>
-            Vous êtes connecté en tant
+            Vous êtes ici en tant
             {%  if user is null %}
-                qu'invité
-            {% elseif not user.getIsAdmin() %}
-                que membre
+                que visiteur anonyme
+                <p>Redirections possibles :</p>
+                <ul>
+                    <li> <a href="{{ path("security_login") }}" >Connexion</a> </li>
+                    <li> <a href="{{ path("security_register") }}">Inscription</a> </li>
+                </ul>
             {% elseif user.getIsSuperAdmin() %}
                 que super-administrateur
+                <p>Redirection(s) possible(s) :</p>
+                <ul>
+                    <li> <a href="{{ path("menu_main") }}" >Menu principal</a> </li>
+                    <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+                </ul>
+            {% elseif not user.getIsAdmin() %}
+                que client(e)
+                <p>Redirection(s) possible(s) :</p>
+                <ul>
+                    <li> <a href="{{ path("menu_main") }}" >Menu principal</a> </li>
+                    <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+                </ul>
             {% else %}
                 qu'administrateur
+                <p>Redirection(s) possible(s) :</p>
+                <ul>
+                    <li> <a href="{{ path("menu_main") }}" >Menu principal</a> </li>
+                    <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+                </ul>
             {% endif %}
         </p>
     </div>
