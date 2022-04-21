@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Utilisateur;
-use App\Form\UtilisateurType;
+use App\Form\InscriptionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,7 +24,7 @@ class FormController extends AbstractController
             throw $this->createNotFoundException('Vous êtes déjà connecté');
         }
 
-        $form = $this->createForm(UtilisateurType::class, $user);
+        $form = $this->createForm(InscriptionType::class, $user);
         $form->add('send', SubmitType::class, ['label' => 'Valider l\'inscription']);
 
         $form->handleRequest($request);
@@ -49,14 +49,25 @@ class FormController extends AbstractController
     }
 
     #[Route('/connexion', name: 'connexion')]
-    public function connexionAction(EntityManagerInterface $em, Request $request): Response
+    public function connexionAction(AuthenticationUtils $authenticationUtils): Response
     {
 
         if ($this->getUser() !== null) {
             throw $this->createNotFoundException('Vous êtes déjà connecté');
         }
+        if ($this->getUser()) {
+            $this->addFlash('success',"Vous êtes déjà connecté !");
+            return $this->redirectToRoute('menu_main');
+        }
 
-        return $this->render('form/connexion.html.twig');
+        $error = $authenticationUtils->getLastAuthenticationError();
+        if ($error) {
+            $this->addFlash('error',"Verifiez vos informations !");
+        }
+
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('form/connexion.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
 
     }
 }

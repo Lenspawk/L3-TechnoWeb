@@ -35,7 +35,7 @@ class MenuController extends AbstractController
         return $this->render('menu/menu.html.twig'/*, $args*/);
     }
 
-    /*#[Route('/ajoutendur', name: 'ajoutendur')]
+    #[Route('/ajoutendur', name: 'ajoutendur')]
     public function ajoutendurAction(ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
@@ -56,7 +56,22 @@ class MenuController extends AbstractController
         dump($user);
 
         return $this->redirectToRoute('accueil_index');
-    }*/
+    }
+
+    #[Route('/effacerendur', name: 'effacerendur')]
+    public function effacerendurAction(ManagerRegistry $doctrine): Response
+    {
+        $id = 1;
+        $em = $doctrine->getManager();
+        $utilisateurRepository = $em->getRepository('App:Utilisateur');
+
+        $utilisateur = $utilisateurRepository->find($id);
+
+        $em->remove($utilisateur);
+        $em->flush();
+
+        return $this->redirectToRoute('accueil_index');
+    }
 
 
 }
