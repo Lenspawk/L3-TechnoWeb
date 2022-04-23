@@ -25,13 +25,14 @@ class Produit
     #[ORM\Column(type: 'integer')]
     private $stock;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Panier::class)]
-    private $shoppingBasket;
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Panier::class, orphanRemoval: true)]
+    private $product;
 
     public function __construct()
     {
-        $this->shoppingBasket = new ArrayCollection();
+        $this->product = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -74,33 +75,33 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection<int, Panier>
-     */
-    public function getShoppingBasket(): Collection
-    {
-        return $this->shoppingBasket;
-    }
+   /**
+    * @return Collection<int, Panier>
+    */
+   public function getProduct(): Collection
+   {
+       return $this->product;
+   }
 
-    public function addShoppingBasket(Panier $shoppingBasket): self
-    {
-        if (!$this->shoppingBasket->contains($shoppingBasket)) {
-            $this->shoppingBasket[] = $shoppingBasket;
-            $shoppingBasket->setProduct($this);
-        }
+   public function addProduct(Panier $product): self
+   {
+       if (!$this->product->contains($product)) {
+           $this->product[] = $product;
+           $product->setProduct($this);
+       }
 
-        return $this;
-    }
+       return $this;
+   }
 
-    public function removeShoppingBasket(Panier $shoppingBasket): self
-    {
-        if ($this->shoppingBasket->removeElement($shoppingBasket)) {
-            // set the owning side to null (unless already changed)
-            if ($shoppingBasket->getProduct() === $this) {
-                $shoppingBasket->setProduct(null);
-            }
-        }
+   public function removeProduct(Panier $product): self
+   {
+       if ($this->product->removeElement($product)) {
+           // set the owning side to null (unless already changed)
+           if ($product->getProduct() === $this) {
+               $product->setProduct(null);
+           }
+       }
 
-        return $this;
-    }
+       return $this;
+   }
 }

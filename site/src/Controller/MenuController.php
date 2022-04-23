@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Panier;
 use App\Entity\Utilisateur;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,25 +36,23 @@ class MenuController extends AbstractController
         return $this->render('menu/menu.html.twig', $args);
     }
 
-    #[Route('/ajoutendur', name: 'ajoutendur')]
-    public function ajoutendurAction(ManagerRegistry $doctrine): Response
+    #[Route('/ajoutendur/{id}', name: 'ajoutendur')]
+    public function ajoutendurAction(int $id,ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
-        $date = new \DateTime('@'.strtotime('now'));
+        //$date = new \DateTime('@'.strtotime('now'));
 
-        $user = new Utilisateur();
-        $user->setLogin('bioxtech')
-            ->setPassword('guigui')
-            ->setSurname('Guillaume')
-            ->setFirstname('Porro')
-            //->setDateOfBirth($date)
-            ->setIsAdmin(true)
-            ->setIsSuperAdmin(false);
-        dump($user);
+        $panier = new Panier();
+        $panier->setUser($id)
+            ->setProduct($id)
+            ->setQuantity('5');
 
-        $em->persist($user);
+
+        dump($panier);
+
+        $em->persist($panier);
         $em->flush();
-        dump($user);
+        dump($panier);
 
         return $this->redirectToRoute('accueil_index');
     }

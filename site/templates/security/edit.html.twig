@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition{% endblock %}
+
+{% block body %}
+<h1>Edition du compte</h1>
+    <h2>Vous pouvez annuler l'opération si vous le souhaitez</h2>
+    <h3>Vous pouvez aussi garder certains champs équivalents</h3>
+    {{ form(formEdition) }}
+    <li> <a href="{{ path("menu_main") }}" >Annuler</a> </li>
+{% endblock %}

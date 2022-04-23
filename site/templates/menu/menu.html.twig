@@ -1,14 +1,20 @@
-<!DOCTYPE html>
+{% extends 'base.html.twig' %}
 
-<title>MenuController</title>
+{% block title %}Menu principal{% endblock %}
 
 {% block body %}
+
     {% if user.getIsAdmin() %}
         <p> Vous êtes l'administrateur {{ user.login }}</p>
         <ul>
             {#<li>{{ nbProducts }} produits enregistrés</li>#}
-            <li> <a href="{{ path("menu_main") }}"> Gérer les utilisateurs </a> </li>
-            <li> <a href="{{ path("menu_main") }}">Ajouter un produit</a> </li>
+            <li> <a href="{{ path("security_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
+            <li> <a href="{{ path("produit_magasin") }}">Magasin</a> </li>
+            <li> <a href="{{ path("panier_list", {'id': user.id}) }}">Mon panier</a> </li>
+            <li> <a href="{{ path("accueil_index") }}">Accueil</a> </li>
+            <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+            <li> <a href="{{ path("user_index") }}"> Gérer les utilisateurs </a> </li>
+            <li> <a href="{{ path("produit_ajouter") }}">Ajouter un produit</a> </li>
             <li> <a href="https://fr.wikipedia.org/wiki/The_Truman_Show">The Truman Show</a> </li>
         </ul>
     {% elseif user.getIsSuperAdmin() %}
@@ -22,11 +28,12 @@
         <p> Vous êtes le/la client(e) {{ user.login }}</p>
         <ul>
             {#<li>{{ nbProducts }} produits enregistrés</li>#}
-            <li> <a href="{{ path("menu_main") }}">Modifier & Editer son profil</a> </li>
-            <li> <a href="{{ path("menu_main") }}">Magasin</a> </li>
-            <li> <a href="{{ path("menu_main") }}">Mon panier</a> </li>
+            <li> <a href="{{ path("security_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
+            <li> <a href="{{ path("produit_magasin") }}">Magasin</a> </li>
+            <li> <a href="{{ path("panier_list", {'id': user.id}) }}">Mon panier</a> </li>
             <li> <a href="{{ path("accueil_index") }}">Accueil</a> </li>
             <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
         </ul>
     {% endif %}
+
 {% endblock %}

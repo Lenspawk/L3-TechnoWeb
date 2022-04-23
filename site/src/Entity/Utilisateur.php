@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -37,11 +39,16 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean', options: ['default'=>false])]
     private $isAdmin;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Panier::class, cascade: ['persist', 'remove'])]
-    private $shoppingBasket;
-
     #[ORM\Column(type: 'boolean', options: ['default'=>false])]
     private $isSuperAdmin;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Panier::class, orphanRemoval: true)]
+    private $shoppingBasket;
+
+    public function __construct()
+    {
+        $this->shoppingBasket = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,23 +127,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getShoppingBasket(): ?Panier
-    {
-        return $this->shoppingBasket;
-    }
-
-    public function setShoppingBasket(Panier $shoppingBasket): self
-    {
-        // set the owning side of the relation if necessary
-        if ($shoppingBasket->getUser() !== $this) {
-            $shoppingBasket->setUser($this);
-        }
-
-        $this->shoppingBasket = $shoppingBasket;
-
-        return $this;
-    }
-
     public function getIsSuperAdmin(): ?bool
     {
         return $this->isSuperAdmin;
@@ -182,6 +172,36 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials()
     {}
+
+    /**
+     * @return Collection<int, Panier>
+     */
+    public function getShoppingBasket(): Collection
+    {
+        return $this->shoppingBasket;
+    }
+
+    public function addShoppingBasket(Panier $shoppingBasket): self
+    {
+        if (!$this->shoppingBasket->contains($shoppingBasket)) {
+            $this->shoppingBasket[] = $shoppingBasket;
+            $shoppingBasket->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShoppingBasket(Panier $shoppingBasket): self
+    {
+        if ($this->shoppingBasket->removeElement($shoppingBasket)) {
+            // set the owning side to null (unless already changed)
+            if ($shoppingBasket->getUser() === $this) {
+                $shoppingBasket->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 
 
 

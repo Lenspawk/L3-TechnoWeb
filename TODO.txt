@@ -1,0 +1,2 @@
+- Gestion Utilisateurs, si la date de naissance est <null> dans la bdd, cela affiche la date actuelle
+- Changer type DateTime en date (pour ne plus avoir l'heure)

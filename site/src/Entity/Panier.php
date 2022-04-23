@@ -14,19 +14,33 @@ class Panier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToOne(inversedBy: 'shoppingBasket', targetEntity: Utilisateur::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $user;
-
-    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'shoppingBasket')]
-    private $product;
 
     #[ORM\Column(type: 'integer')]
     private $quantity;
 
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'shoppingBasket')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
+    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'product')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $product;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
     }
 
     public function getUser(): ?Utilisateur
@@ -34,7 +48,7 @@ class Panier
         return $this->user;
     }
 
-    public function setUser(Utilisateur $user): self
+    public function setUser(?Utilisateur $user): self
     {
         $this->user = $user;
 
@@ -49,18 +63,6 @@ class Panier
     public function setProduct(?Produit $product): self
     {
         $this->product = $product;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): self
-    {
-        $this->quantity = $quantity;
 
         return $this;
     }

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'un produit{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un produit</h1>
+    {{ form_start(formAjouterProduit) }}
+    {{ form_rest(formAjouterProduit) }}
+    <button type="submit">Valider</button>
+    {{ form_end(formAjouterProduit) }}
+    <p><a href="{{ path("menu_main") }}" >Menu principal</a></p>
+{% endblock %}

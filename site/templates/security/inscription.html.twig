@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+{% extends 'base.html.twig' %}
 
-<title>Site/Inscription</title>
+{% block title %}Inscription{% endblock %}
 
 {% block body %}
 <h1>Inscription</h1>
     {{ form(formInscription) }}
+    <p><a href="{{ path("accueil_index") }}" >Accueil</a></p>
 {% endblock %}
