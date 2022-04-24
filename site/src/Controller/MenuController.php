@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Panier;
 use App\Entity\Utilisateur;
+use App\Repository\PanierRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,24 +17,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class MenuController extends AbstractController
 {
     #[Route('', name: 'main')]
-    public function mainAction(ManagerRegistry $doctrine): Response
+    public function mainAction(PanierRepository $shoppingBasketRepository): Response
     {
+        $user = $this->getUser();
 
-        //$userId = $this->getUser()->getId();
+        $shoppingBaskets = $shoppingBasketRepository->findBy(['user' => $user]);
 
-        //$em = $doctrine->getManager();
-        //$utilisateurRepository = $em->getRepository('App:Utilisateur');
-        //$utilisateur = $utilisateurRepository->find($userId);
-        //$panierRepository = $em->getRepository('App:Panier');
-        //$panier = count($panierRepository)->findAll();
+        $qtyTotal = 0;
 
-        $args = array(
-            //'user'=> $utilisateur,
-            'user'=> $this->getUser(),
-            //'nbProducts' => $panier
-        );
+        foreach($shoppingBaskets as $basket){
+            $qtyTotal = $qtyTotal + $basket->getQuantity();
+        }
 
-        return $this->render('menu/menu.html.twig', $args);
+        return $this->render('menu/menu.html.twig', [
+            'user' => $user,
+            'qtyTotal'=>$qtyTotal,
+        ]);
     }
 
     #[Route('/ajoutendur/{id}', name: 'ajoutendur')]

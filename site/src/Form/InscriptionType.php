@@ -32,9 +32,6 @@ class InscriptionType extends AbstractType
             ->add('surname')
             ->add('firstname')
             ->add('dateOfBirth')
-            ->add('send', SubmitType::class,[
-                'label' => 'Valider l\'inscription',
-            ])
         ;
     }
 

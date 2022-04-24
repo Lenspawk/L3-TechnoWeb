@@ -3,46 +3,60 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+
     <div class="accueil-wrapper">
         {%  if user is null %}
         <h1>Bonjour visiteur!</h1>
+
         {% else %}
         <h1>Bonjour {{ user.login }}!</h1>
+
         {% endif %}
 
-        <p>
-            {{ welcome }} {{ nameSite }}
-        </p>
+        <p>Bienvenue sur le site de Guillaume et Simon !</p>
+
         <p>
             Vous êtes ici en tant
             {%  if user is null %}
                 que visiteur anonyme
+
                 <p>Redirections possibles :</p>
+
                 <ul>
                     <li> <a href="{{ path("security_login") }}" >Connexion</a> </li>
                     <li> <a href="{{ path("security_register") }}">Inscription</a> </li>
                 </ul>
+
             {% elseif user.getIsSuperAdmin() %}
-                que super-administrateur
+                que super-administrateur.
+
                 <p>Redirection(s) possible(s) :</p>
+
                 <ul>
                     <li> <a href="{{ path("menu_main") }}" >Menu principal</a> </li>
                     <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
                 </ul>
+
             {% elseif not user.getIsAdmin() %}
-                que client(e)
+                que client(e).
+
                 <p>Redirection(s) possible(s) :</p>
+
                 <ul>
                     <li> <a href="{{ path("menu_main") }}" >Menu principal</a> </li>
                     <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
                 </ul>
+
             {% else %}
-                qu'administrateur
+                qu'administrateur.
+
                 <p>Redirection(s) possible(s) :</p>
+
                 <ul>
                     <li> <a href="{{ path("menu_main") }}" >Menu principal</a> </li>
                     <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
                 </ul>
+
             {% endif %}
         </p>
     </div>

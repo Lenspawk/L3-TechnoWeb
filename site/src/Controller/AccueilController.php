@@ -11,12 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class AccueilController extends AbstractController
 {
     #[Route('', name: 'index')]
-    public function indexAction(): Response
+    public function index(): Response
     {
         return $this->render('accueil/index.html.twig', [
             'user' => $this->getUser(),
-            'welcome' => 'Nous te souhaitons la bienvenue sur le site',
-            'nameSite' => 'Simon&Guillaume',
         ]);
     }
 }

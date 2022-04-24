@@ -7,7 +7,7 @@
     {% if user.getIsAdmin() %}
         <p> Vous êtes l'administrateur {{ user.login }}</p>
         <ul>
-            {#<li>{{ nbProducts }} produits enregistrés</li>#}
+            <li>{{ qtyTotal }} produit(s) enregistré(s)</li>
             <li> <a href="{{ path("security_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
             <li> <a href="{{ path("produit_magasin") }}">Magasin</a> </li>
             <li> <a href="{{ path("panier_list", {'id': user.id}) }}">Mon panier</a> </li>
@@ -20,14 +20,14 @@
     {% elseif user.getIsSuperAdmin() %}
         <p> Vous êtes le/la super-administrateur {{ user.login }}</p>
         <ul>
-            {#<li>{{ nbProducts }} produits enregistrés</li>#}
-            <li> <a href="{{ path("menu_main") }}"> Gestion des administrateurs </a> </li>
+            <li>{{ qtyTotal }} produit(s) enregistré(s)</li>
+            <li> <a href="{{ path("user_addadmin") }}"> Gestion des administrateurs </a> </li>
             <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
         </ul>
     {% else %}
         <p> Vous êtes le/la client(e) {{ user.login }}</p>
         <ul>
-            {#<li>{{ nbProducts }} produits enregistrés</li>#}
+            <li>{{ qtyTotal }} produit(s) enregistré(s)</li>
             <li> <a href="{{ path("security_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
             <li> <a href="{{ path("produit_magasin") }}">Magasin</a> </li>
             <li> <a href="{{ path("panier_list", {'id': user.id}) }}">Mon panier</a> </li>

@@ -34,34 +34,13 @@ class PanierController extends AbstractController
     public function list(EntityManagerInterface $em, ProduitRepository $produitRepository, PanierRepository $shoppingBasketRepository): Response
     {
         $user = $this->getUser();
-        //if (is_null($user))
-        //    throw new NotFoundHttpException('Utilisateur inexistant');
-        //elseif ($this->getUser() === null){
-        //    throw $this->createNotFoundException('Vous n\'êtes pas connecté');
-        //}
-        //elseif ($this->getUser() !== null && $this->getUser()->getIsSuperAdmin()) {
-        //    throw $this->createNotFoundException('Accès bloqué en tant que super-administrateur');
-        //}
 
-        //$productsRepository = $em->getRepository(Produit::class);
         $products = $produitRepository->findAll();
 
-        //$utilisateurRepository = $em->getRepository(Utilisateur::class);
-
-
-        //$shoppingBasketRepository = $em->getRepository(Panier::class);
         $shoppingBaskets = $shoppingBasketRepository->findBy(['user' => $user]);
-
 
         $priceTotal = 0;
         $qtyTotal = 0;
-        /*$args = array(
-            'user' => $user,
-            'shoppingBaskets' => $shoppingBaskets,
-            'products' => $products,
-            'priceTotal' => $priceTotal,
-            'qtyTotal' => $qtyTotal
-        );*/
 
         return $this->render('panier/list.html.twig', [
             'user' => $user,
@@ -71,6 +50,7 @@ class PanierController extends AbstractController
             'qtyTotal' => $qtyTotal,
         ]);
     }
+
 
     #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
     #[Route('/ajout', name: 'ajout')]
@@ -106,50 +86,8 @@ class PanierController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('panier_list');
-
-        /*if ($request->isMethod('post')) {
-
-            $produitRepository = $em->getRepository('App:Produit');
-
-            $userRepository = $em->getRepository('App:Utilisateur');
-            $user = $userRepository->find($userId);
-
-
-            $panierRepository = $em->getRepository('App:Panier');
-            $paniers = $panierRepository->findBy(['user' => $this->getUser()]);
-
-            foreach ($_POST['quantite'] as $produitId => $wantedQty) {
-
-
-                if ($wantedQty > 0) {
-                    $produit = $produitRepository->find($produitId);
-
-                    $newPanier = new Panier();
-                    $newPanier->setProduct($produit);
-                    $newPanier->setUser($this->getUser());
-                    $newPanier->setQuantity($wantedQty);
-
-                    foreach ($paniers as $panier) {
-                        if ($panier->getProduct()->getId() === $produitId) {
-                            $newPanier = $panier;
-                            $newPanier->setQuantite($newPanier->getQuantite() + $wantedQty);
-                            break;
-                        }
-                    }
-
-                    $em->persist($newPanier);
-
-                    $produit->setStock($produit->getStock() - $wantedQty);
-                    $em->persist($produit);
-                }
-            }
-        }*/
-
-        //$this->addFlash('success', 'Produits ajoutés au panier');
-        //$em->flush();
-
-        //return $this->redirectToRoute('panier_list');
     }
+
 
     #[Route('/suppression/{id}', name: 'suppression', requirements: ['id' => "\d+"])]
     public function delete(Produit $produit, PanierRepository $panierRepository, EntityManagerInterface $em): Response

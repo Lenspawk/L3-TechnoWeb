@@ -3,7 +3,15 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-<h1>Inscription</h1>
-    {{ form(formInscription) }}
+    <h1>Inscription</h1>
+
+    {{ form_start(formInscription) }}
+    {{ form_rest(formInscription) }}
+
+    <button type="submit">S'inscrire</button>
+
+    {{ form_end(formInscription) }}
+
     <p><a href="{{ path("accueil_index") }}" >Accueil</a></p>
+
 {% endblock %}

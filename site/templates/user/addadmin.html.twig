@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'un administrateur{% endblock %}
+
+{% block body %}
+    <h1>Créer un administrateur</h1>
+    {{ form_start(formAddAdmin) }}
+    {{ form_rest(formAddAdmin) }}
+    <button type="submit">Créer</button>
+    {{ form_end(formAddAdmin) }}
+    <p><a href="{{ path("menu_main") }}" >Menu principal</a></p>
+{% endblock %}

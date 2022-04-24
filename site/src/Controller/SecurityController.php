@@ -93,11 +93,7 @@ class SecurityController extends AbstractController
         }
 
         $user = $em->getRepository('App:Utilisateur')->find($id);
-        //$user->setLogin($user->getLogin());
-        //$user->setPassword($user->getPassword());
-        //$user->setSurname($user->getSurname());
-        //$user->setFirstname($user->getFirstname());
-        //$user->setDateOfBirth($user->getDateOfBirth());
+
         if(is_null($user))
             throw new NotFoundHttpException('Utilisateur inexistant');
 

@@ -1,2 +1,7 @@
 - Gestion Utilisateurs, si la date de naissance est <null> dans la bdd, cela affiche la date actuelle
 - Changer type DateTime en date (pour ne plus avoir l'heure)
+- Je pense qu'on peut regrouper le code pour l'inscription, edition et creation d'un admin
+- Custom message d'accès interdit aux routes non autorisées
+- Faire assert dans Entitys (pour le remplissage des champs)
+- Faire service
+- Edition article en + ?
