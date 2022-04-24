@@ -21,7 +21,8 @@
         <p> Vous êtes le/la super-administrateur {{ user.login }}</p>
         <ul>
             <li>{{ qtyTotal }} produit(s) enregistré(s)</li>
-            <li> <a href="{{ path("user_addadmin") }}"> Gestion des administrateurs </a> </li>
+            <li> <a href="{{ path("security_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
+            <li> <a href="{{ path("user_addadmin") }}"> Ajouter un administrateur </a> </li>
             <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
         </ul>
     {% else %}

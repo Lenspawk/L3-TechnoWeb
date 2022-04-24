@@ -36,8 +36,12 @@
         </tr>
     </table>
 
-    <input type="submit" name="buy" value="Acheter">
-    <input type="submit" name="empty" value="Vider">
+    <a href="{{ path("panier_commander") }}">
+        Commander
+    </a>
+    <a href="{{ path("panier_vider") }}">
+        Vider
+    </a>
 
     <p><a href="{{ path("menu_main") }}" >Menu principal</a></p>
 {% endblock %}

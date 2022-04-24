@@ -7,6 +7,7 @@ use App\Entity\Panier;
 use App\Entity\Utilisateur;
 use App\Repository\PanierRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MenuController extends AbstractController
 {
+    #[IsGranted("IS_AUTHENTICATED_FULLY")]
     #[Route('', name: 'main')]
     public function mainAction(PanierRepository $shoppingBasketRepository): Response
     {

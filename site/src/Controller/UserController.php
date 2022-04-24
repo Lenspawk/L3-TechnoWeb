@@ -84,6 +84,6 @@ class UserController extends AbstractController
             }
         }
 
-        return $this->render('addadmin.html.twig', ['formAddAdmin' => $form->createView()]);
+        return $this->render('user/addadmin.html.twig', ['formAddAdmin' => $form->createView()]);
     }
 }

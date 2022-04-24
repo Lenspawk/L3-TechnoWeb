@@ -88,7 +88,7 @@ class PanierController extends AbstractController
         return $this->redirectToRoute('panier_list');
     }
 
-
+    #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
     #[Route('/suppression/{id}', name: 'suppression', requirements: ['id' => "\d+"])]
     public function delete(Produit $produit, PanierRepository $panierRepository, EntityManagerInterface $em): Response
     {
@@ -103,6 +103,50 @@ class PanierController extends AbstractController
         $em->flush();
 
         $this->alertService->info('Produit supprimé');
+
+        return $this->redirectToRoute('panier_list');
+    }
+
+    #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
+    #[Route('/vider}', name: 'vider')]
+    public function empty(ProduitRepository $produitRepository, PanierRepository $panierRepository, EntityManagerInterface $em) : Response
+    {
+        $user = $this->getUser();
+        $baskets = $panierRepository->findBy(['user'=>$user]);
+
+
+        foreach ($baskets as $basket){
+            $produit = $basket->getProduct();
+
+            $produit->setStock($produit->getStock() + $basket->getQuantity());
+
+            $em->persist($produit);
+
+            $em->remove($basket);
+        }
+
+        $em->flush();
+
+        $this->alertService->info('Panier vidé');
+
+        return $this->redirectToRoute('panier_list');
+    }
+
+    #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
+    #[Route('/commander}', name: 'commander')]
+    public function command(PanierRepository $panierRepository, EntityManagerInterface $em) : Response
+    {
+        $user = $this->getUser();
+        $baskets = $panierRepository->findBy(['user'=>$user]);
+
+
+        foreach ($baskets as $basket){
+            $em->remove($basket);
+        }
+
+        $em->flush();
+
+        $this->alertService->info('Commande confirmée');
 
         return $this->redirectToRoute('panier_list');
     }

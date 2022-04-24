@@ -18,7 +18,7 @@ class InscriptionType extends AbstractType
     {
         $builder
             ->add('login', TextType::class,[
-                'label' => 'Votre Login :',
+                'label' => 'Login :',
                 'required' => true,
             ])
             ->add('password', RepeatedType::class,[
@@ -27,8 +27,8 @@ class InscriptionType extends AbstractType
                 'required' => true,
                 'first_name' => 'pass',
                 'second_name' => 'confirm',
-                'first_options' => ['label' => 'Votre mot de passe :'],
-                'second_options' => ['label' => 'Confirmez votre mot de passe :'],
+                'first_options' => ['label' => 'Mot de passe :'],
+                'second_options' => ['label' => 'Confirmez le mot de passe :'],
             ])
             ->add('firstname', TextType::class,[
                 'label' => 'Prénom :',
@@ -40,6 +40,9 @@ class InscriptionType extends AbstractType
             ])
             ->add('dateOfBirth', DateType::class,[
                 'label' => 'Date de naissance :',
+                //'years' => range(date('Y'), date('Y') . 100),
+                //'months' => range(date('m'), 12),
+                //'days' => range(date('d'), 31),
             ])
         ;
     }
