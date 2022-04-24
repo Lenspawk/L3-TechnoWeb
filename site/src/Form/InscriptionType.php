@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,9 +30,17 @@ class InscriptionType extends AbstractType
                 'first_options' => ['label' => 'Votre mot de passe :'],
                 'second_options' => ['label' => 'Confirmez votre mot de passe :'],
             ])
-            ->add('surname')
-            ->add('firstname')
-            ->add('dateOfBirth')
+            ->add('firstname', TextType::class,[
+                'label' => 'Prénom :',
+                'required' => true,
+            ])
+            ->add('surname',TextType::class,[
+                'label' => 'Nom :',
+                'required' => true,
+            ])
+            ->add('dateOfBirth', DateType::class,[
+                'label' => 'Date de naissance :',
+            ])
         ;
     }
 
