@@ -20,7 +20,7 @@
             <td>{{ user.password }}</td>
             <td>{{ user.surname }}</td>
             <td>{{ user.firstname }}</td>
-            <td>{{ user.dateOfBirth | date('d-m-y')}}</td>
+            <td>{{ user.dateOfBirth | date}}</td>
             <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
             {% if not (user.isSuperAdmin or currentUser.id == user.id) %}
                 <td>
