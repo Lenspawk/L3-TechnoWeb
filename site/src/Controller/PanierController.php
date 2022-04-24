@@ -108,7 +108,7 @@ class PanierController extends AbstractController
     }
 
     #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
-    #[Route('/vider}', name: 'vider')]
+    #[Route('/vider', name: 'vider')]
     public function empty(ProduitRepository $produitRepository, PanierRepository $panierRepository, EntityManagerInterface $em) : Response
     {
         $user = $this->getUser();
@@ -133,7 +133,7 @@ class PanierController extends AbstractController
     }
 
     #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
-    #[Route('/commander}', name: 'commander')]
+    #[Route('/commander', name: 'commander')]
     public function command(PanierRepository $panierRepository, EntityManagerInterface $em) : Response
     {
         $user = $this->getUser();
