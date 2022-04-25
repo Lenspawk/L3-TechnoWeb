@@ -136,7 +136,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->dateOfBirth;
     }
 
-    public function setDateOfBirth(?\DateTimeInterface $dateOfBirth): self
+    public function setDateOfBirth(?DateTimeInterface $dateOfBirth): self
     {
         $this->dateOfBirth = $dateOfBirth;
 

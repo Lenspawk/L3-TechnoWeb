@@ -7,3 +7,4 @@
 - Hierarchie templates
 - Apres inscription on apparait dans le menu et non a l'accueil
 - access_control dans security.yaml
+- Opti la boucle foreach ajout panier et celle ajout produit

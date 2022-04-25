@@ -6,15 +6,14 @@ use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Table(name : 'im22_products')]
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
-#[UniqueEntity(
-    fields: ['label', 'price'],
-    message: 'Ce produit existe déjà avec ce prix',
-    errorPath: 'label',
-)]
+//#[UniqueEntity(
+//    fields: ['label', 'price'],
+//    message: 'Ce produit existe déjà avec ce prix',
+//    errorPath: 'label',
+//)]
 class Produit
 {
     #[ORM\Id]

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Form\ProduitType;
+use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -37,11 +38,12 @@ class ProduitController extends AbstractController
     /**
      * @param EntityManagerInterface $em
      * @param Request $request
+     * @param ProduitRepository $produitRepository
      * @return Response
      */
     #[IsGranted("ROLE_ADMIN")]
     #[Route('/ajouter', name: 'ajouter')]
-    public function add(EntityManagerInterface $em, Request $request): Response
+    public function add(EntityManagerInterface $em, Request $request, ProduitRepository $produitRepository): Response
     {
         $produit = new Produit();
 
@@ -50,6 +52,14 @@ class ProduitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach($produitRepository->findAll() as $prod){
+                if ($prod->getLabel() === $produit->getLabel() && $prod->getPrice() === $produit->getPrice()){
+                    $stockTemp = $prod->getStock();
+                    $produit = $prod;
+                    $produit->setStock($produit->getStock() + $stockTemp);
+                }
+            }
 
             $em->persist($produit);
             $em->flush();
