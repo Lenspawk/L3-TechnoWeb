@@ -6,33 +6,38 @@ use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Table(name : 'im22_products')]
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[UniqueEntity(
+    fields: ['label', 'price'],
+    message: 'Ce produit existe déjà avec ce prix',
+    errorPath: 'label',
+)]
 class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 30)]
-    private $label;
+    private string $label;
 
     #[ORM\Column(type: 'float')]
-    private $price;
+    private float $price;
 
     #[ORM\Column(type: 'integer')]
-    private $stock;
+    private int $stock;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Panier::class, orphanRemoval: true)]
-    private $product;
+    private Collection $product;
 
     public function __construct()
     {
         $this->product = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {

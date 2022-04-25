@@ -12,19 +12,18 @@ class Panier
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
-
+    private int $id;
 
     #[ORM\Column(type: 'integer')]
-    private $quantity;
+    private int $quantity;
 
     #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'shoppingBasket')]
     #[ORM\JoinColumn(nullable: false)]
-    private $user;
+    private Utilisateur $user;
 
     #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'product')]
     #[ORM\JoinColumn(nullable: false)]
-    private $product;
+    private Produit $product;
 
     public function getId(): ?int
     {

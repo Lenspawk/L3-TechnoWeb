@@ -8,11 +8,11 @@
         <p> Vous êtes l'administrateur {{ user.login }}</p>
         <ul>
             <li>{{ qtyTotal }} produit(s) enregistré(s)</li>
-            <li> <a href="{{ path("security_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
-            <li> <a href="{{ path("produit_magasin") }}">Magasin</a> </li>
-            <li> <a href="{{ path("panier_list", {'id': user.id}) }}">Mon panier</a> </li>
-            <li> <a href="{{ path("accueil_index") }}">Accueil</a> </li>
-            <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+            <li> <a href="{{ path("user_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
+            <li> <a href="{{ path("produit_index") }}">Magasin</a> </li>
+            <li> <a href="{{ path("panier_index", {'id': user.id}) }}">Mon panier</a> </li>
+            <li> <a href="{{ path("index") }}">Accueil</a> </li>
+            <li> <a href="{{ path("security_logout") }}">Déconnexion</a> </li>
             <li> <a href="{{ path("user_index") }}"> Gérer les utilisateurs </a> </li>
             <li> <a href="{{ path("produit_ajouter") }}">Ajouter un produit</a> </li>
             <li> <a href="https://fr.wikipedia.org/wiki/The_Truman_Show">The Truman Show</a> </li>
@@ -21,19 +21,19 @@
         <p> Vous êtes le/la super-administrateur {{ user.login }}</p>
         <ul>
             <li>{{ qtyTotal }} produit(s) enregistré(s)</li>
-            <li> <a href="{{ path("security_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
+            <li> <a href="{{ path("user_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
             <li> <a href="{{ path("user_addadmin") }}"> Ajouter un administrateur </a> </li>
-            <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+            <li> <a href="{{ path("security_logout") }}">Déconnexion</a> </li>
         </ul>
     {% else %}
         <p> Vous êtes le/la client(e) {{ user.login }}</p>
         <ul>
             <li>{{ qtyTotal }} produit(s) enregistré(s)</li>
-            <li> <a href="{{ path("security_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
-            <li> <a href="{{ path("produit_magasin") }}">Magasin</a> </li>
-            <li> <a href="{{ path("panier_list", {'id': user.id}) }}">Mon panier</a> </li>
-            <li> <a href="{{ path("accueil_index") }}">Accueil</a> </li>
-            <li> <a href="{{ path("security_logout") }}" onclick="alert('Déconnecté')">Déconnexion</a> </li>
+            <li> <a href="{{ path("user_edit", {'id': user.id}) }}">Modifier & Editer son profil</a> </li>
+            <li> <a href="{{ path("produit_index") }}">Magasin</a> </li>
+            <li> <a href="{{ path("panier_index", {'id': user.id}) }}">Mon panier</a> </li>
+            <li> <a href="{{ path("index") }}">Accueil</a> </li>
+            <li> <a href="{{ path("security_logout") }}"> Déconnexion </a> </li>
         </ul>
     {% endif %}
 

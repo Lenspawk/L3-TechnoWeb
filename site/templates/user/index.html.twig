@@ -20,8 +20,8 @@
             <td>{{ user.password }}</td>
             <td>{{ user.surname }}</td>
             <td>{{ user.firstname }}</td>
-            <td>{{ user.dateOfBirth | date}}</td>
-            <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+            <td>{{ user.getDateOfBirth() ? user.dateOfBirth | date('d/m/Y') : 'Non fournie'}}</td>
+            <td>{{ user.getIsAdmin() ? 'Administrateur' : user.getIsSuperAdmin() ? 'Super-Administrateur' : 'Client' }}</td>
             {% if not (user.isSuperAdmin or currentUser.id == user.id) %}
                 <td>
                     <a class="btn btn-success" href="{{ path('user_delete', {'id': user.id }) }}">Supprimer</a>
@@ -30,5 +30,5 @@
         </tr>
         {% endfor %}
     </table>
-    <p><a href="{{ path("menu_main") }}" >Menu principal</a></p>
+    <p><a href="{{ path("menu") }}" >Menu principal</a></p>
 {% endblock %}

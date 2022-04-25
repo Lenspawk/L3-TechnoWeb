@@ -3,47 +3,75 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Table(name : 'im22_users')]
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+#[UniqueEntity(
+    fields: ['login'],
+    message: 'Ce login existe déjà',
+    errorPath: 'login',
+)]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 60,
+        minMessage: 'Vous devez saisir au moins {{ limit }} caractères',
+        maxMessage: 'Vous ne pouvez pas saisir plus de {{ limit }} caractères',
+    )]
     #[ORM\Column(type: 'string', length: 60, unique: true)]
-    private $login;
+    private string $login;
 
     #[ORM\Column(type: 'string', length: 60)]
-    private $password;
+    private string $password;
 
     #[ORM\Column(type: 'string', length: 30)]
-    private $surname;
+    #[Assert\Length(
+        min: 3,
+        max: 30,
+        minMessage: 'Vous devez saisir au moins {{ limit }} caractères',
+        maxMessage: 'Vous ne pouvez pas saisir plus de {{ limit }} caractères',
+    )]
+    private string $surname;
 
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    private array $roles = [];
 
     #[ORM\Column(type: 'string', length: 30)]
-    private $firstname;
+    #[Assert\Length(
+        min: 2,
+        max: 30,
+        minMessage: 'Vous devez saisir au moins {{ limit }} caractères',
+        maxMessage: 'Vous ne pouvez pas saisir plus de {{ limit }} caractères',
+    )]
+    private string $firstname;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    private $dateOfBirth;
+    private ?DateTimeInterface $dateOfBirth;
 
-    #[ORM\Column(type: 'boolean', options: ['default'=>false])]
-    private $isAdmin;
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isAdmin = false;
 
-    #[ORM\Column(type: 'boolean', options: ['default'=>false])]
-    private $isSuperAdmin;
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isSuperAdmin = false;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Panier::class, orphanRemoval: true)]
-    private $shoppingBasket;
+    private Collection $shoppingBasket;
 
     public function __construct()
     {
@@ -103,7 +131,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDateOfBirth(): ?\DateTimeInterface
+    public function getDateOfBirth(): ?DateTimeInterface
     {
         return $this->dateOfBirth;
     }

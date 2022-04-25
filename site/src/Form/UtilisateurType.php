@@ -38,10 +38,10 @@ class UtilisateurType extends AbstractType
                 'required' => true,
             ])
             ->add('dateOfBirth', DateType::class,[
+                'years' => range(date('Y'), 1900),
                 'label' => 'Date de naissance',
-                'html5' => false,
-                'attr' => ['class' => 'flatpickr'],
-                'format' => 'dd-MM-yyyy',
+                'required' => false,
+                'empty_data' => null,
             ])
         ;
     }

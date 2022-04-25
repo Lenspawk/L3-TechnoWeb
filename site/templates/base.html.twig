@@ -6,7 +6,14 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
     </head>
     <body>
-        {% include '_flash_message.html.twig' %}
+    {% for label, messages in app.flashes(['success', 'warning', 'error']) %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
         {% block body %}{% endblock %}
     </body>
 </html>

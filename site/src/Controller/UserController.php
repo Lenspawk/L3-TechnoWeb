@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Utilisateur;
-use App\Form\InscriptionType;
+use App\Form\UtilisateurType;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -18,6 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
+    /**
+     * @param UtilisateurRepository $utilisateurRepository
+     * @return Response
+     */
     #[Security("is_granted('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")]
     #[Route('', name: 'index')]
     public function index(UtilisateurRepository $utilisateurRepository): Response
@@ -28,13 +32,49 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Utilisateur $user
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @return Response
+     */
+    #[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
+    #[Route('/edit/{id}', name: 'edit', requirements: ['id' => "\d+"])]
+    public function edit(Utilisateur $user, EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $form = $this->createForm(UtilisateurType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $user->getPassword();
+
+            $user->setPassword($passwordHasher->hashPassword($user, $password));
+            $em->flush();
+
+            $this->addFlash('success', 'Informations modifiées');
+            return $this->redirectToRoute('menu');
+        }
+        else{
+            if ($form->isSubmitted())
+                $this->addFlash('error', 'Erreur lors de l\'edition du profil');
+        }
+
+        return $this->renderForm('user/edit.html.twig', ['formEdition' => $form]);
+
+    }
+
+
+    /**
+     * @param Utilisateur $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[IsGranted("ROLE_ADMIN")]
     #[Route('/delete/{id}', name: 'delete', requirements: ['id' => "\d+"])]
-    public function delete(Utilisateur $user, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $em): Response
+    public function delete(Utilisateur $user, EntityManagerInterface $em): Response
     {
-        $hasSAAccess = $this->isGranted('ROLE_SUPERADMIN');
-
-        if ($hasSAAccess or $user === $this->getUser()){
+        if ($this->isGranted('ROLE_SUPERADMIN') || $user === $this->getUser()) {
             $this->addFlash('error', 'Vous ne pouvez pas supprimer ce compte');
             return $this->redirectToRoute('user_index');
         }
@@ -49,41 +89,42 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user_index');
     }
 
+
+    /**
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @return Response
+     */
     #[Security("is_granted('ROLE_SUPERADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")]
     #[Route('/addadmin', name: 'addadmin')]
-    public function addAdmin(EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function addadmin(EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new Utilisateur();
 
-        $form = $this->createForm(InscriptionType::class, $user);
-
+        $form = $this->createForm(UtilisateurType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
+
             $password = $user->getPassword();
-            $hashedPassword = $passwordHasher->hashPassword($user, $password);
 
-            $loginExist = $em->getRepository('App:Utilisateur')->findOneBy(['login' => $user->getLogin()]);
+            $user->setPassword($passwordHasher->hashPassword($user, $password));
+            $user->setIsAdmin(true);
+            $user->setRoles(['ROLE_ADMIN']);
 
-            if (!$loginExist){
-                $user->setPassword($hashedPassword);
-                $user->setIsSuperAdmin(false);
-                $user->setIsAdmin(true);
-                $user->setRoles(['ROLE_ADMIN']);
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'Administrateur crée');
 
-                $em->persist($user);
-                $em->flush();
-                $this->addFlash('success', 'Administrateur crée');
-
-                return $this->redirectToRoute('user_addadmin');
+            return $this->redirectToRoute('user_addadmin');
             }
-            else{
-                if ($form->isSubmitted())
-                    $this->addFlash('error', 'Erreur lors de la création de l\'administrateur');
+        else{
+            if ($form->isSubmitted()) {
+                $this->addFlash('error', 'Erreur lors de la création de l\'administrateur');
             }
         }
 
-        return $this->render('user/addadmin.html.twig', ['formAddAdmin' => $form->createView()]);
+        return $this->renderForm('user/addadmin.html.twig', ['formAddAdmin' => $form]);
     }
 }

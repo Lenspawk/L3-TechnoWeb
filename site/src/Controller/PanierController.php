@@ -7,11 +7,7 @@ use App\Entity\Produit;
 use App\Entity\Utilisateur;
 use App\Repository\PanierRepository;
 use App\Repository\ProduitRepository;
-use App\Repository\UtilisateurRepository;
-use App\Service\AlertServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,19 +15,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/Panier', name: 'panier_')]
-
+#[Security(" not is_granted('ROLE_SUPERADMIN')")]
 class PanierController extends AbstractController
 {
-    private AlertServiceInterface $alertService;
-
-    public function __construct(AlertServiceInterface $alertService)
-    {
-        $this->alertService = $alertService;
-    }
-
-    #[Route('/list', name: 'list')]
-    #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
-    public function list(EntityManagerInterface $em, ProduitRepository $produitRepository, PanierRepository $shoppingBasketRepository): Response
+    /**
+     * @param ProduitRepository $produitRepository
+     * @param PanierRepository $shoppingBasketRepository
+     * @return Response
+     */
+    #[Route('/index', name: 'index')]
+    public function index(ProduitRepository $produitRepository, PanierRepository $shoppingBasketRepository): Response
     {
         $user = $this->getUser();
 
@@ -42,7 +35,7 @@ class PanierController extends AbstractController
         $priceTotal = 0;
         $qtyTotal = 0;
 
-        return $this->render('panier/list.html.twig', [
+        return $this->render('panier/index.html.twig', [
             'user' => $user,
             'shoppingBaskets' => $shoppingBaskets,
             'products' => $products,
@@ -52,7 +45,12 @@ class PanierController extends AbstractController
     }
 
 
-    #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
+    /**
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param ProduitRepository $produitRepository
+     * @return Response
+     */
     #[Route('/ajout', name: 'ajout')]
     public function add(EntityManagerInterface $em, Request $request, ProduitRepository $produitRepository) : Response
     {
@@ -81,14 +79,19 @@ class PanierController extends AbstractController
             }
         }
 
-        //$this->addFlash('success', 'Produits ajoutés au panier');
-        $this->alertService->success('Produits ajoutés au panier');
+        $this->addFlash('success', 'Produits ajoutés au panier');
         $em->flush();
 
         return $this->redirectToRoute('panier_list');
     }
 
-    #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
+
+    /**
+     * @param Produit $produit
+     * @param PanierRepository $panierRepository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/suppression/{id}', name: 'suppression', requirements: ['id' => "\d+"])]
     public function delete(Produit $produit, PanierRepository $panierRepository, EntityManagerInterface $em): Response
     {
@@ -102,14 +105,19 @@ class PanierController extends AbstractController
         $em->remove($basket);
         $em->flush();
 
-        $this->alertService->info('Produit supprimé');
+        $this->addFlash('success', 'Produit supprimé');
 
         return $this->redirectToRoute('panier_list');
     }
 
-    #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
+
+    /**
+     * @param PanierRepository $panierRepository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/vider', name: 'vider')]
-    public function empty(ProduitRepository $produitRepository, PanierRepository $panierRepository, EntityManagerInterface $em) : Response
+    public function empty(PanierRepository $panierRepository, EntityManagerInterface $em) : Response
     {
         $user = $this->getUser();
         $baskets = $panierRepository->findBy(['user'=>$user]);
@@ -127,12 +135,17 @@ class PanierController extends AbstractController
 
         $em->flush();
 
-        $this->alertService->info('Panier vidé');
+        $this->addFlash('success', 'Panier vidé');
 
         return $this->redirectToRoute('panier_list');
     }
 
-    #[Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")]
+
+    /**
+     * @param PanierRepository $panierRepository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/commander', name: 'commander')]
     public function command(PanierRepository $panierRepository, EntityManagerInterface $em) : Response
     {
@@ -146,7 +159,7 @@ class PanierController extends AbstractController
 
         $em->flush();
 
-        $this->alertService->info('Commande confirmée');
+        $this->addFlash('success', 'Commande confirmée');
 
         return $this->redirectToRoute('panier_list');
     }

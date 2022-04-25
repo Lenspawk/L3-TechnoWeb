@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Produit;
 use App\Form\ProduitType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,30 +16,32 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProduitController extends AbstractController
 {
-    #[Route('/magasin', name: 'magasin')]
-    public function magasinAction(ManagerRegistry $doctrine): Response
+    /**
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    #[Security(" not is_granted('ROLE_SUPERADMIN')")]
+    #[Route('/index', name: 'index')]
+    public function index(EntityManagerInterface $em): Response
     {
-        if ($this->getUser() === null) {
-            throw $this->createNotFoundException('Vous n\'êtes pas connecté');
-        } elseif ($this->getUser() !== null && $this->getUser()->getIsSuperAdmin()) {
-            throw $this->createNotFoundException('Accès bloqué en tant que super-administrateur');
-        }
-
-        $em = $doctrine->getManager();
         $produitRepository = $em->getRepository('App:Produit');
         $produits = $produitRepository->findAll();
 
-        $args = array(
+        return $this->render('produit/index.html.twig', [
             'produits' => $produits,
-            'user'=> $this->getUser()
-        );
-
-        return $this->render('produit/magasin.html.twig', $args);
+            'user' => $this->getUser(),
+        ]);
     }
 
+
+    /**
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return Response
+     */
     #[IsGranted("ROLE_ADMIN")]
     #[Route('/ajouter', name: 'ajouter')]
-    public function registerAction(EntityManagerInterface $em, Request $request): Response
+    public function add(EntityManagerInterface $em, Request $request): Response
     {
         $produit = new Produit();
 
@@ -53,7 +55,7 @@ class ProduitController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Produit ajouté');
 
-            return $this->redirectToRoute('accueil_index');
+            return $this->redirectToRoute('index');
         }
         else{
             if ($form->isSubmitted()) {
@@ -61,7 +63,7 @@ class ProduitController extends AbstractController
             }
         }
 
-        return $this->render('produit/ajouter.html.twig', ['formAjouterProduit' => $form->createView()]);
+        return $this->renderForm('produit/ajouter.html.twig', ['formAjouterProduit' => $form]);
 
     }
 }
