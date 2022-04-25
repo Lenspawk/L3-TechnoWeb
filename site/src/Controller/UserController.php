@@ -53,7 +53,14 @@ class UserController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Informations modifiées');
-            return $this->redirectToRoute('menu');
+
+            if ($user->getIsSuperAdmin()) {
+                return $this->redirectToRoute('index');
+            }
+            else{
+                return $this->redirectToRoute('produit_index');
+            }
+
         }
         else{
             if ($form->isSubmitted())

@@ -49,10 +49,11 @@ class PanierController extends AbstractController
      * @param EntityManagerInterface $em
      * @param Request $request
      * @param ProduitRepository $produitRepository
+     * @param PanierRepository $panierRepository
      * @return Response
      */
     #[Route('/ajout', name: 'ajout')]
-    public function add(EntityManagerInterface $em, Request $request, ProduitRepository $produitRepository) : Response
+    public function add(EntityManagerInterface $em, Request $request, ProduitRepository $produitRepository, PanierRepository $panierRepository) : Response
     {
         if (!$request->isMethod('POST')){
             throw $this->createNotFoundException('Erreur');
@@ -65,12 +66,19 @@ class PanierController extends AbstractController
 
         foreach($wantedQty as $key => $value){
             if ($value > 0){
-                $produit = $produitRepository->find($key);
 
+                $produit = $produitRepository->find($key);
                 $panier = new Panier();
                 $panier->setProduct($produit);
                 $panier->setUser($user);
                 $panier->setQuantity($value);
+
+                foreach($panierRepository->findAll() as $pan){
+                    if ($key === $pan->getProduct()->getId() && $pan->getUser()->getId() === $panier->getUser()->getId()){
+                        $panier = $pan;
+                        $panier->setQuantity($panier->getQuantity() + $value);
+                    }
+                }
 
                 $em->persist($panier);
 
@@ -82,7 +90,7 @@ class PanierController extends AbstractController
         $this->addFlash('success', 'Produits ajoutés au panier');
         $em->flush();
 
-        return $this->redirectToRoute('panier_list');
+        return $this->redirectToRoute('produit_index');
     }
 
 
@@ -107,7 +115,7 @@ class PanierController extends AbstractController
 
         $this->addFlash('success', 'Produit supprimé');
 
-        return $this->redirectToRoute('panier_list');
+        return $this->redirectToRoute('panier_index');
     }
 
 
@@ -137,7 +145,7 @@ class PanierController extends AbstractController
 
         $this->addFlash('success', 'Panier vidé');
 
-        return $this->redirectToRoute('panier_list');
+        return $this->redirectToRoute('panier_index');
     }
 
 
@@ -161,7 +169,7 @@ class PanierController extends AbstractController
 
         $this->addFlash('success', 'Commande confirmée');
 
-        return $this->redirectToRoute('panier_list');
+        return $this->redirectToRoute('panier_index');
     }
 }
 

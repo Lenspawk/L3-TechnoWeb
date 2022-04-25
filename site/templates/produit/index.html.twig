@@ -19,13 +19,9 @@
                     <td>{{ produit.stock }}</td>
                     <td>
                         <label>
-                            {#  {% set disableChoix = '' %}
-                            {% if produit.stock == 0 %}
-                            {% set disableChoix = 'disabled' %}
-                            {% endif %} #}
                             <select {{ produit.stock == 0 ? 'disabled'  }} name="quantite[{{ produit.id }}]">
                                 {% for i in 0..produit.getStock() %}
-                                    <option value="{{ i }}">{{ i }}</option>
+                                    <option>{{ i }}</option>
                                 {% endfor %}
                             </select>
                         </label>

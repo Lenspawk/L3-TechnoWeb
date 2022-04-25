@@ -5,5 +5,5 @@
 - Faire service
 - Edition article en + ?
 - Hierarchie templates
-- Connecter utilisateur direct après inscription
+- Apres inscription on apparait dans le menu et non a l'accueil
 - access_control dans security.yaml

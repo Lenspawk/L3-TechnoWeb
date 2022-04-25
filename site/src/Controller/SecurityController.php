@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+
 #[Route('/security', name: 'security_')]
 
 class SecurityController extends AbstractController
@@ -24,7 +25,8 @@ class SecurityController extends AbstractController
      * @return Response
      */
     #[Route('/register', name: 'register')]
-    public function register(EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function register(EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $passwordHasher) : Response
+
     {
         if ($this->getUser() !== null) {
             throw $this->createNotFoundException('Vous êtes déjà connecté');

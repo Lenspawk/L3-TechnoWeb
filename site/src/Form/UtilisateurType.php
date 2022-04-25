@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UtilisateurType extends AbstractType
 {
@@ -24,16 +26,14 @@ class UtilisateurType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passes doivent etre identiques',
                 'required' => true,
-                'first_name' => 'pass',
-                'second_name' => 'confirm',
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmez le mot de passe'],
             ])
-            ->add('firstname', TextType::class,[
+            ->add('surname', TextType::class,[
                 'label' => 'Prénom',
                 'required' => true,
             ])
-            ->add('surname',TextType::class,[
+            ->add('firstname',TextType::class,[
                 'label' => 'Nom',
                 'required' => true,
             ])
