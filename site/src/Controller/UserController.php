@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use App\Form\UtilisateurType;
+use App\Repository\PanierRepository;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -75,15 +76,28 @@ class UserController extends AbstractController
     /**
      * @param Utilisateur $user
      * @param EntityManagerInterface $em
+     * @param PanierRepository $panierRepository
      * @return Response
      */
     #[IsGranted("ROLE_ADMIN")]
     #[Route('/delete/{id}', name: 'delete', requirements: ['id' => "\d+"])]
-    public function delete(Utilisateur $user, EntityManagerInterface $em): Response
+    public function delete(Utilisateur $user, EntityManagerInterface $em, PanierRepository $panierRepository): Response
     {
         if ($this->isGranted('ROLE_SUPERADMIN') || $user === $this->getUser()) {
             $this->addFlash('error', 'Vous ne pouvez pas supprimer ce compte');
             return $this->redirectToRoute('user_index');
+        }
+
+        $baskets = $panierRepository->findBy(['user'=>$user]);
+
+        foreach ($baskets as $basket){
+            $produit = $basket->getProduct();
+
+            $produit->setStock($produit->getStock() + $basket->getQuantity());
+
+            $em->persist($produit);
+
+            $em->remove($basket);
         }
 
         $em->persist($user);

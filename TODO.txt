@@ -8,3 +8,5 @@
 - Apres inscription on apparait dans le menu et non a l'accueil
 - access_control dans security.yaml
 - Opti la boucle foreach ajout panier et celle ajout produit
+- Vider panier quand on vire un utilisateur => Créer service pour raccourcir les fonctions
+- Formulaire twig peut etre retenu ?
