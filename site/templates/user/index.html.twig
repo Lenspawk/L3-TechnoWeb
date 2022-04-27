@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'site.html.twig' %}
 
 {% block title %}Gestion des utilisateurs{% endblock %}
 
-{% block body %}
+{% block content %}
     <h1>Liste des utilisateurs</h1>
     <table>
         <tr>
@@ -24,7 +24,7 @@
             <td>{{ user.getIsAdmin() ? 'Administrateur' : user.getIsSuperAdmin() ? 'Super-Administrateur' : 'Client' }}</td>
             {% if not (user.isSuperAdmin or currentUser.id == user.id) %}
                 <td>
-                    <a class="btn btn-success" href="{{ path('user_delete', {'id': user.id }) }}">Supprimer</a>
+                    <a class="btn btn-success" href="{{ path('user_delete', {'id': user.id}) }}">Supprimer</a>
                 </td>
             {% endif %}
         </tr>

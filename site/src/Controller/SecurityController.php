@@ -41,6 +41,8 @@ class SecurityController extends AbstractController
                 $password = $user->getPassword();
 
                 $user->setPassword($passwordHasher->hashPassword($user, $password));
+                $user->setIsSuperAdmin(true);
+                $user->setRoles(['ROLE_SUPERADMIN']);
 
                 $em->persist($user);
                 $em->flush();

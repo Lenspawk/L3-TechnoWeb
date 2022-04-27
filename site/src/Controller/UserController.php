@@ -44,6 +44,11 @@ class UserController extends AbstractController
     #[Route('/edit/{id}', name: 'edit', requirements: ['id' => "\d+"])]
     public function edit(Utilisateur $user, EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
+        if ($user !== $this->getUser()) {
+            $this->addFlash('error', 'Vous ne pouvez pas éditer ce compte');
+            return $this->redirectToRoute('menu');
+        }
+
         $form = $this->createForm(UtilisateurType::class, $user);
         $form->handleRequest($request);
 
@@ -83,7 +88,7 @@ class UserController extends AbstractController
     #[Route('/delete/{id}', name: 'delete', requirements: ['id' => "\d+"])]
     public function delete(Utilisateur $user, EntityManagerInterface $em, PanierRepository $panierRepository): Response
     {
-        if ($this->isGranted('ROLE_SUPERADMIN') || $user === $this->getUser()) {
+        if ($user->getIsSuperAdmin() || $user === $this->getUser()) {
             $this->addFlash('error', 'Vous ne pouvez pas supprimer ce compte');
             return $this->redirectToRoute('user_index');
         }
