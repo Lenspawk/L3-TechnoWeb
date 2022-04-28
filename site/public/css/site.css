@@ -1,0 +1,11 @@
+header{
+    outline: 5px solid rgba(38, 163, 255, 0.45);
+    outline-offset: 6px;
+}
+header, footer{
+    text-align: center;
+}
+
+footer{
+    letter-spacing: 10px;
+}

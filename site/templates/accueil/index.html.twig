@@ -2,6 +2,11 @@
 
 {% block title %}Accueil{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/accueil/index.css') }}" rel="stylesheet" />
+{% endblock %}
+
 {% block content %}
 
     <div class="accueil-wrapper">
@@ -9,11 +14,12 @@
         <h1>Bonjour visiteur!</h1>
 
         {% else %}
-        <h1>Bonjour {{ user.login }}!</h1>
+        <h3>Bonjour {{ user.login }}!</h3>
 
         {% endif %}
 
         <p>Bienvenue sur le site de Guillaume et Simon !</p>
+        <p id="resultat-service">Voici le résultat de la somme des entiers du tableau de notre service : {{ tab }}</p>
 
         <p>
             Vous êtes ici en tant
@@ -58,6 +64,5 @@
                 </ul>
 
             {% endif %}
-        </p>
     </div>
 {% endblock %}

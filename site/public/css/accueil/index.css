@@ -1,0 +1,11 @@
+h1{
+    text-shadow: 0px 0px 15px #F5FF00, 5px 5px 10px #FF0000;
+}
+
+#resultat-service{
+    text-decoration: underline wavy #FF9B9B;
+}
+
+body *::first-letter{
+    font-size: xx-large;
+}

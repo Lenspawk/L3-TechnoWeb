@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% block header %}
-        <h1>Site de Simon et Guillaume</h1>
-    {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/site.css') }}" rel="stylesheet" />
+{% endblock %}
 
+{% block header %}
+    <h1>Site de Simon et Guillaume</h1>
+{% endblock %}
+
+{% block main %}
         {% for label, messages in app.flashes(['success', 'warning', 'error']) %}
             {% for message in messages %}
                 <div class="flash-{{ label }}">
@@ -15,7 +20,8 @@
 
     {% block content %}
     {% endblock %}
-    {% block footer %}
-        <p>Projet L3 - Informatique | Technologies du Web 2</p>
-    {% endblock %}
+{% endblock %}
+
+{% block footer %}
+    <p>Projet L3 - Informatique | Technologies du Web 2</p>
 {% endblock %}
