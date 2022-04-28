@@ -1,0 +1,5 @@
+site/config:
+  services.yaml
+  packages/web_profiler.yaml
+  packages/security.yaml
+  bundles.php

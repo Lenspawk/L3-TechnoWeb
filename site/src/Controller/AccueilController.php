@@ -14,6 +14,7 @@ class AccueilController extends AbstractController
      * @return Response
      */
     #[Route('/Accueil', name : 'index')]
+    #[Route('', name : 'index')]
     public function index(MyService $myService): Response
     {
         return $this->render('accueil/index.html.twig', [
