@@ -25,7 +25,7 @@ class ProduitController extends AbstractController
     #[Route('/index', name: 'index')]
     public function index(EntityManagerInterface $em): Response
     {
-        $produitRepository = $em->getRepository('App:Produit');
+        $produitRepository = $em->getRepository(Produit::class);
         $produits = $produitRepository->findAll();
 
         return $this->render('produit/index.html.twig', [
