@@ -5,7 +5,3 @@ h1{
 #resultat-service{
     text-decoration: underline wavy #FF9B9B;
 }
-
-body *::first-letter{
-    font-size: xx-large;
-}

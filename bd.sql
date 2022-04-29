@@ -17,8 +17,12 @@ create table im22_products
     stock INTEGER          not null
 );
 
-INSERT INTO im22_products (id, label, price, stock) VALUES (1, 'Pomme', 1.5, 25);
-INSERT INTO im22_products (id, label, price, stock) VALUES (2, 'Banane', 2, 25);
+INSERT INTO im22_products (id, label, price, stock) VALUES (1, 'Pomme', 1.5, 20);
+INSERT INTO im22_products (id, label, price, stock) VALUES (2, 'Banane', 2, 21);
+INSERT INTO im22_products (id, label, price, stock) VALUES (3, 'Mangue', 3, 40);
+INSERT INTO im22_products (id, label, price, stock) VALUES (4, 'Téléscope', 499.99, 23);
+INSERT INTO im22_products (id, label, price, stock) VALUES (5, 'Piano', 1500, 10);
+INSERT INTO im22_products (id, label, price, stock) VALUES (6, 'Chien', 2650, 141);
 
 create table im22_shopping_basket
 (
@@ -37,6 +41,12 @@ create index IDX_27ACDEDCA76ED395
 
 INSERT INTO im22_shopping_basket (id, user_id, product_id, quantity) VALUES (5, 2, 1, 10);
 INSERT INTO im22_shopping_basket (id, user_id, product_id, quantity) VALUES (6, 2, 2, 35);
+INSERT INTO im22_shopping_basket (id, user_id, product_id, quantity) VALUES (11, 4, 2, 4);
+INSERT INTO im22_shopping_basket (id, user_id, product_id, quantity) VALUES (12, 4, 4, 5);
+INSERT INTO im22_shopping_basket (id, user_id, product_id, quantity) VALUES (13, 4, 5, 2);
+INSERT INTO im22_shopping_basket (id, user_id, product_id, quantity) VALUES (14, 4, 6, 9);
+INSERT INTO im22_shopping_basket (id, user_id, product_id, quantity) VALUES (15, 14, 1, 5);
+INSERT INTO im22_shopping_basket (id, user_id, product_id, quantity) VALUES (16, 14, 3, 10);
 
 create table im22_users
 (
@@ -55,13 +65,12 @@ create table im22_users
 create unique index UNIQ_B4392992AA08CB10
     on im22_users (login);
 
-INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (2, 'gilles', '$2y$13$HeyjHbYYjNdnENnLNgU7h.nl6gSuiExShHd9nWeMkrZrvd/AdcOvG', 'Subrenat', '["ROLE_ADMIN"]', 'Gilles', '1975-07-10', 1, 0);
-INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (3, 'simon', '$2y$13$3fQLxff2SYruyLt6o6pc0ezfVXQ/Za3xjhXqac1S.6KP98dy2xUOu', 'Kortsmit', '["ROLE_ADMIN"]', 'Simon', '2000-07-03', 1, 0);
 INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (4, 'rita', '$2y$13$sRHHz8rg85CHLr7EnJ7VLeqJ3t5kn4nQMXpUqZAcwxuR5EtbRyjZC', 'Zrour', '[]', 'Rita', '1978-11-23', 0, 0);
-INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (7, 'dede', '$2y$13$sT2TXYrV.YBuRBsQ5SPLx.rKZs0PBsI.RfsVZuXNnC3xCrqXhkuN.', 'dede', '[]', 'dede', null, 0, 0);
-INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (10, 'admin', '$2y$13$Cd5VWfzgjreF59pXP77N4OA5nJsg3cuIMIH2wxoQSR9eHUIrygr2y', 'Admin', '["ROLE_SUPERADMIN"]', 'Admin', null, 0, 1);
-INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (11, 'adm', '$2y$13$BkPXk3vBj37GMG.naguI..ZUaeVWZaoCLEQUn0wpPrCWOsbUyjakC', 'adm', '["ROLE_SUPERADMIN"]', 'adm', null, 0, 1);
-INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (12, 'adm2', '$2y$13$Sf67VIQ2duZUFu3k1.VNC.83KBMhc9b0vr33oDKuSdG5KtAyrBBbS', 'adm2', '["ROLE_SUPERADMIN"]', 'adm2', null, 0, 1);
+INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (10, 'sadmin', '$2y$13$ERTk3I9lcCuTB9Bvt.Ni8eEJtYbzfNNcEMM1flag6Z7u3VPqEcVAO', 'Admin', '["ROLE_SUPERADMIN"]', 'Admin', null, 0, 1);
+INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (13, 'gporro', '$2y$13$2CGZb0/J8BcPlJfe3.CNCuNFIS8Q67W4yjm8SraHNTHqFEV1bpHxy', 'Guillaume', '["ROLE_ADMIN"]', 'Porro', '2001-06-28', 1, 0);
+INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (14, 'simon', '$2y$13$ew/vSWWlImQSt.efBFPFeOH29tOwyipkzVv3zFaS.GGYmtwHtsHgu', 'Simon', '[]', 'Gautier', null, 0, 0);
+INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (15, 'skortsmi', '$2y$13$3BeOhSdk7ZVr.hv7Zv5Up.wX5WBTl2SHMVXys1XhwwkwZwrY0uxoG', 'Simon', '["ROLE_ADMIN"]', 'Kortsmit', '2000-07-03', 1, 0);
+INSERT INTO im22_users (id, login, password, surname, roles, firstname, date_of_birth, is_admin, is_super_admin) VALUES (16, 'gilles', '$2y$13$CXKCRdr0wXS05JY7gq4eG.56ciFh1.M2oozfebtoOc7zqZ0uV91cC', 'Gilles', '["ROLE_ADMIN"]', 'Subrenat', null, 1, 0);
 
 create table sqlite_master
 (
@@ -89,6 +98,6 @@ create table sqlite_sequence
     seq
 );
 
-INSERT INTO sqlite_sequence (name, seq) VALUES ('im22_users', 12);
-INSERT INTO sqlite_sequence (name, seq) VALUES ('im22_products', 2);
-INSERT INTO sqlite_sequence (name, seq) VALUES ('im22_shopping_basket', 10);
+INSERT INTO sqlite_sequence (name, seq) VALUES ('im22_users', 18);
+INSERT INTO sqlite_sequence (name, seq) VALUES ('im22_products', 6);
+INSERT INTO sqlite_sequence (name, seq) VALUES ('im22_shopping_basket', 16);

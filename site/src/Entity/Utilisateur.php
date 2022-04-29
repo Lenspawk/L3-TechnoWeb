@@ -20,6 +20,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     message: 'Ce login existe déjà',
     errorPath: 'login',
 )]
+#[UniqueEntity(
+    fields: ['surname', 'firstname'],
+    message: 'Cette personne existe déjà',
+    errorPath: 'surname',
+)]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
